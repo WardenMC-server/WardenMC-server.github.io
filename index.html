@@ -1,11 +1,386 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="description" content="Официальный сайт сервера Minecraft WardenMC - выживание с администрацией и правилами">
+    <meta name="keywords" content="Minecraft, сервер, WardenMC, выживание, survival">
+    <meta name="theme-color" content="#3b82f6">
+    <title>WardenMC - Официальный сайт сервера</title>
+    <link rel="icon" href="https://via.placeholder.com/32" type="image/png">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Кастомные стили */
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            animation: gradientShift 10s ease infinite;
+            background-size: 300% 300%;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .sidebar {
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .content {
+            transition: margin 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .content-expanded {
+            margin-left: 0;
+        }
+        @media (min-width: 768px) {
+            .sidebar-hidden {
+                transform: translateX(0);
+            }
+            .content-expanded {
+                margin-left: 16rem;
+            }
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .fade-in {
+            animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .loading {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-<body>
-    ецые
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Мобильное меню -->
+    <div class="md:hidden fixed top-0 left-0 right-0 bg-gray-800 z-50 p-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="https://via.placeholder.com/40" alt="Логотип WardenMC" class="h-8 w-8 rounded mr-2">
+            <span class="text-xl font-bold">WardenMC</span>
+        </div>
+        <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 gradient-bg text-white z-40 md:translate-x-0 sidebar-hidden">
+        <div class="flex items-center justify-center h-16 px-4 border-b border-gray-700">
+            <img src="https://via.placeholder.com/40" alt="Логотип WardenMC" class="h-8 w-8 rounded mr-2">
+            <span class="text-xl font-bold">WardenMC</span>
+        </div>
+        <div class="p-4">
+            <div class="text-gray-400 uppercase text-xs font-semibold tracking-wider mb-4">Меню навигации</div>
+            <nav>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-blue-900 rounded-lg transition-all duration-300 hover:translate-x-2 mb-1 active-nav">
+                    <i class="fas fa-home mr-3 transition-all duration-300 group-hover:text-blue-300"></i>
+                    Главная
+                </a>
+                <a href="#admin" class="flex items-center px-4 py-3 text-gray-300 hover:bg-blue-900 rounded-lg transition-all duration-300 hover:translate-x-2 mb-1 group">
+                    <i class="fas fa-user-shield mr-3 transition-all duration-300 group-hover:text-purple-300"></i>
+                    Администрация
+                </a>
+                <a href="#info" class="flex items-center px-4 py-3 text-gray-300 hover:bg-blue-900 rounded-lg transition-all duration-300 hover:translate-x-2 mb-1 group">
+                    <i class="fas fa-info-circle mr-3 transition-all duration-300 group-hover:text-blue-300"></i>
+                    Информация
+                </a>
+            </nav>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+            <div class="text-center text-gray-400 text-sm">
+                © 2023 WardenMC.ru
+            </div>
+        </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <div id="content" class="content min-h-screen pt-16 md:pt-0 md:ml-64 content-expanded">
+        <!-- Заголовок -->
+        <header class="gradient-bg p-6 md:p-8 text-white">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Добро пожаловать на WardenMC</h1>
+            <p class="text-gray-300">Официальный сайт сервера Minecraft</p>
+        </header>
+
+        <!-- Основной контент -->
+        <main class="p-6 md:p-8">
+            <!-- Раздел Администрация -->
+            <section id="admin" class="mb-12 fade-in">
+                <h2 class="text-2xl font-bold mb-6 text-blue-400 border-b border-gray-700 pb-2">Администрация сервера</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Карточка администратора -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <img src="https://via.placeholder.com/60" alt="Аватар solorblaze" class="w-12 h-12 rounded-full mr-4 border-2 border-blue-500">
+                                <div>
+                                    <h3 class="font-bold text-lg">solorblaze</h3>
+                                    <span class="text-yellow-400 text-sm">Владелец</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-4">Основатель сервера WardenMC. Отвечает за развитие проекта и общее руководство.</p>
+                            <div class="flex space-x-2">
+                                <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded hover:animate-pulse">CoreProtect</span>
+                                <span class="bg-purple-900 text-purple-300 text-xs px-2 py-1 rounded hover:animate-pulse">Ban</span>
+                                <span class="bg-red-900 text-red-300 text-xs px-2 py-1 rounded hover:animate-pulse">Mute</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка администратора -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <img src="https://via.placeholder.com/60" alt="Аватар mazhor1113" class="w-12 h-12 rounded-full mr-4 border-2 border-green-500">
+                                <div>
+                                    <h3 class="font-bold text-lg">mazhor1113</h3>
+                                    <span class="text-green-400 text-sm">Администратор</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-4">Отвечает за контроль игрового процесса и соблюдение правил сервера.</p>
+                            <div class="flex space-x-2">
+                                <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">CoreProtect</span>
+                                <span class="bg-purple-900 text-purple-300 text-xs px-2 py-1 rounded">Ban</span>
+                                <span class="bg-red-900 text-red-300 text-xs px-2 py-1 rounded">Mute</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка администратора -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <img src="https://via.placeholder.com/60" alt="Аватар artemchik2390" class="w-12 h-12 rounded-full mr-4 border-2 border-red-500">
+                                <div>
+                                    <h3 class="font-bold text-lg">artemchik2390</h3>
+                                    <span class="text-red-400 text-sm">Администратор</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-4">Следит за порядком на сервере и помогает игрокам с техническими вопросами.</p>
+                            <div class="flex space-x-2">
+                                <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">CoreProtect</span>
+                                <span class="bg-purple-900 text-purple-300 text-xs px-2 py-1 rounded">Ban</span>
+                                <span class="bg-red-900 text-red-300 text-xs px-2 py-1 rounded">Mute</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Функционал администрации</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="bg-blue-900 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-search text-blue-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Просмотр действий игроков</h4>
+                                    <p class="text-gray-300 text-sm">Администраторы могут просматривать кто что сломал, взял или использовал с помощью CoreProtect.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="bg-purple-900 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-gavel text-purple-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Блокировка игроков</h4>
+                                    <p class="text-gray-300 text-sm">Возможность забанить нарушителей правил сервера.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="bg-red-900 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-volume-mute text-red-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Ограничение чата</h4>
+                                    <p class="text-gray-300 text-sm">Возможность замутить игроков за нарушения в чате.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="bg-gray-900 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-times-circle text-gray-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Ограничения</h4>
+                                    <p class="text-gray-300 text-sm">Администраторы не могут отменять действия игроков (восстанавливать сломанное, возвращать взятое).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Раздел Информация -->
+            <section id="info" class="fade-in">
+                <h2 class="text-2xl font-bold mb-6 text-blue-400 border-b border-gray-700 pb-2">Информация о сервере</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Основные данные</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="w-1/3 md:w-1/5 text-gray-400">Название:</div>
+                            <div class="font-medium">WardenMC</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-1/3 md:w-1/5 text-gray-400">IP адрес:</div>
+                            <div class="font-medium">wardenmc.ru</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-1/3 md:w-1/5 text-gray-400">Версия:</div>
+                            <div class="font-medium">1.20.x</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-1/3 md:w-1/5 text-gray-400">Режим:</div>
+                            <div class="font-medium">Выживание (Survival)</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-1/3 md:w-1/5 text-gray-400">Онлайн:</div>
+                            <div class="font-medium text-green-400">24/7</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Правила сервера</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="text-red-400 mr-2">•</div>
+                            <div>Запрещено использование читов и стороннего ПО</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-red-400 mr-2">•</div>
+                            <div>Запрещено гриферство и воровство</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-red-400 mr-2">•</div>
+                            <div>Запрещено оскорбление игроков и администрации</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-red-400 mr-2">•</div>
+                            <div>Запрещено использование багов и дюпов</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-red-400 mr-2">•</div>
+                            <div>Администрация вправе наказать за любые действия, нарушающие игровой процесс</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Футер -->
+        <footer class="bg-gray-800 p-6 text-center text-gray-400 text-sm border-t border-gray-700">
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <i class="fab fa-discord text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <i class="fab fa-vk text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <i class="fab fa-telegram text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <i class="fab fa-youtube text-xl"></i>
+                </a>
+            </div>
+            <div class="mb-4">
+                <a href="#" class="hover:text-white mx-2">Главная</a>
+                <a href="#admin" class="hover:text-white mx-2">Администрация</a>
+                <a href="#info" class="hover:text-white mx-2">Информация</a>
+            </div>
+            <div>© 2023 WardenMC.ru - Все права защищены</div>
+            <div class="mt-2">Это неофициальный сайт Minecraft. Не аффилирован с Mojang или Microsoft.</div>
+        </footer>
+    </div>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+            content.classList.toggle('content-expanded');
+        });
+
+        // Плавная прокрутка для якорей
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                sidebar.classList.add('sidebar-hidden');
+                content.classList.add('content-expanded');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Loading animation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show loading state
+            document.body.classList.add('loading');
+            
+            setTimeout(() => {
+                // Hide loading and show content
+                document.body.classList.remove('loading');
+                const sections = document.querySelectorAll('section');
+                sections.forEach((section, index) => {
+                    setTimeout(() => {
+                        section.classList.add('fade-in');
+                    }, index * 150);
+                });
+                
+                // Add intersection observer for scroll animations
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('fade-in');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                document.querySelectorAll('section').forEach(section => {
+                    observer.observe(section);
+                });
+            }, 800);
+        });
+    </script>
 </body>
 </html>
